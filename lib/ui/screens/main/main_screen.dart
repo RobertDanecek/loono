@@ -92,6 +92,7 @@ class _MainScreenState extends State<MainScreen> {
         routes: [
           PreventionRoute(),
           FindDoctorRoute(),
+          //HospitalListRoute(),
           AboutHealthRoute(),
         ],
         bottomNavigationBuilder: (_, tabsRouter) {

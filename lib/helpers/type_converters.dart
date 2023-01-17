@@ -165,6 +165,24 @@ class SearchHistoryDbConverter extends TypeConverter<List<SearchResult>, String>
   }
 }
 
+class favoriteHospitalListConverter extends TypeConverter<List<String>, String> {
+  const favoriteHospitalListConverter();
+
+  @override
+  List<String>? mapToDart(String? fromDb) {
+    if (fromDb == null) return null;
+
+    return List<String>.from(json.decode(fromDb) as List);
+  }
+
+  @override
+  String? mapToSql(List<String>? value) {
+    if (value == null) return null;
+
+    return json.encode(value);
+  }
+}
+
 class SimpleHealthcareProviderListConverter
     extends TypeConverter<List<SimpleHealthcareProvider>, String> {
   const SimpleHealthcareProviderListConverter();

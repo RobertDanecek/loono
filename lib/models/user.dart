@@ -33,6 +33,7 @@ class Users extends Table {
 
   DateTimeColumn get latestMapUpdate => dateTime().nullable()();
 
+
   TextColumn get searchHistory => text().map(const SearchHistoryDbConverter()).withDefault(
         Constant(const SearchHistoryDbConverter().mapToSql(<SearchResult>[])!),
       )();
@@ -42,6 +43,9 @@ class Users extends Table {
   TextColumn get badges => text()
       .map(const BadgeListDbConverter())
       .withDefault(Constant(const BadgeListDbConverter().mapToSql(BuiltList.of(<Badge>[]))!))();
+
+
+  TextColumn get favoriteHospital => text().map(const favoriteHospitalListConverter())();
 }
 
 @DriftAccessor(tables: [Users])

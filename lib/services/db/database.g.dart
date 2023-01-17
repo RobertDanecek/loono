@@ -20,6 +20,7 @@ class User extends DataClass implements Insertable<User> {
   final List<SearchResult> searchHistory;
   final int points;
   final BuiltList<Badge> badges;
+  final List<String> favoriteHospital;
   User(
       {required this.id,
       this.sex,
@@ -32,7 +33,8 @@ class User extends DataClass implements Insertable<User> {
       this.latestMapUpdate,
       required this.searchHistory,
       required this.points,
-      required this.badges});
+      required this.badges,
+      required this.favoriteHospital});
   factory User.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return User(
@@ -60,6 +62,9 @@ class User extends DataClass implements Insertable<User> {
           .mapFromDatabaseResponse(data['${effectivePrefix}points'])!,
       badges: $UsersTable.$converter3.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}badges']))!,
+      favoriteHospital: $UsersTable.$converter4.mapToDart(const StringType()
+          .mapFromDatabaseResponse(
+              data['${effectivePrefix}favorite_hospital']))!,
     );
   }
   @override
@@ -104,6 +109,11 @@ class User extends DataClass implements Insertable<User> {
       final converter = $UsersTable.$converter3;
       map['badges'] = Variable<String>(converter.mapToSql(badges)!);
     }
+    {
+      final converter = $UsersTable.$converter4;
+      map['favorite_hospital'] =
+          Variable<String>(converter.mapToSql(favoriteHospital)!);
+    }
     return map;
   }
 
@@ -134,6 +144,7 @@ class User extends DataClass implements Insertable<User> {
       searchHistory: Value(searchHistory),
       points: Value(points),
       badges: Value(badges),
+      favoriteHospital: Value(favoriteHospital),
     );
   }
 
@@ -156,6 +167,8 @@ class User extends DataClass implements Insertable<User> {
           serializer.fromJson<List<SearchResult>>(json['searchHistory']),
       points: serializer.fromJson<int>(json['points']),
       badges: serializer.fromJson<BuiltList<Badge>>(json['badges']),
+      favoriteHospital:
+          serializer.fromJson<List<String>>(json['favoriteHospital']),
     );
   }
   @override
@@ -176,6 +189,7 @@ class User extends DataClass implements Insertable<User> {
       'searchHistory': serializer.toJson<List<SearchResult>>(searchHistory),
       'points': serializer.toJson<int>(points),
       'badges': serializer.toJson<BuiltList<Badge>>(badges),
+      'favoriteHospital': serializer.toJson<List<String>>(favoriteHospital),
     };
   }
 
@@ -191,7 +205,8 @@ class User extends DataClass implements Insertable<User> {
           DateTime? latestMapUpdate,
           List<SearchResult>? searchHistory,
           int? points,
-          BuiltList<Badge>? badges}) =>
+          BuiltList<Badge>? badges,
+          List<String>? favoriteHospital}) =>
       User(
         id: id ?? this.id,
         sex: sex ?? this.sex,
@@ -206,6 +221,7 @@ class User extends DataClass implements Insertable<User> {
         searchHistory: searchHistory ?? this.searchHistory,
         points: points ?? this.points,
         badges: badges ?? this.badges,
+        favoriteHospital: favoriteHospital ?? this.favoriteHospital,
       );
   @override
   String toString() {
@@ -221,7 +237,8 @@ class User extends DataClass implements Insertable<User> {
           ..write('latestMapUpdate: $latestMapUpdate, ')
           ..write('searchHistory: $searchHistory, ')
           ..write('points: $points, ')
-          ..write('badges: $badges')
+          ..write('badges: $badges, ')
+          ..write('favoriteHospital: $favoriteHospital')
           ..write(')'))
         .toString();
   }
@@ -239,7 +256,8 @@ class User extends DataClass implements Insertable<User> {
       latestMapUpdate,
       searchHistory,
       points,
-      badges);
+      badges,
+      favoriteHospital);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -255,7 +273,8 @@ class User extends DataClass implements Insertable<User> {
           other.latestMapUpdate == this.latestMapUpdate &&
           other.searchHistory == this.searchHistory &&
           other.points == this.points &&
-          other.badges == this.badges);
+          other.badges == this.badges &&
+          other.favoriteHospital == this.favoriteHospital);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
@@ -271,6 +290,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<List<SearchResult>> searchHistory;
   final Value<int> points;
   final Value<BuiltList<Badge>> badges;
+  final Value<List<String>> favoriteHospital;
   const UsersCompanion({
     this.id = const Value.absent(),
     this.sex = const Value.absent(),
@@ -284,6 +304,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.searchHistory = const Value.absent(),
     this.points = const Value.absent(),
     this.badges = const Value.absent(),
+    this.favoriteHospital = const Value.absent(),
   });
   UsersCompanion.insert({
     this.id = const Value.absent(),
@@ -298,7 +319,8 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.searchHistory = const Value.absent(),
     this.points = const Value.absent(),
     this.badges = const Value.absent(),
-  });
+    required List<String> favoriteHospital,
+  }) : favoriteHospital = Value(favoriteHospital);
   static Insertable<User> custom({
     Expression<String>? id,
     Expression<Sex?>? sex,
@@ -312,6 +334,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<List<SearchResult>>? searchHistory,
     Expression<int>? points,
     Expression<BuiltList<Badge>>? badges,
+    Expression<List<String>>? favoriteHospital,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -328,6 +351,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (searchHistory != null) 'search_history': searchHistory,
       if (points != null) 'points': points,
       if (badges != null) 'badges': badges,
+      if (favoriteHospital != null) 'favorite_hospital': favoriteHospital,
     });
   }
 
@@ -343,7 +367,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<DateTime?>? latestMapUpdate,
       Value<List<SearchResult>>? searchHistory,
       Value<int>? points,
-      Value<BuiltList<Badge>>? badges}) {
+      Value<BuiltList<Badge>>? badges,
+      Value<List<String>>? favoriteHospital}) {
     return UsersCompanion(
       id: id ?? this.id,
       sex: sex ?? this.sex,
@@ -358,6 +383,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       searchHistory: searchHistory ?? this.searchHistory,
       points: points ?? this.points,
       badges: badges ?? this.badges,
+      favoriteHospital: favoriteHospital ?? this.favoriteHospital,
     );
   }
 
@@ -408,6 +434,11 @@ class UsersCompanion extends UpdateCompanion<User> {
       final converter = $UsersTable.$converter3;
       map['badges'] = Variable<String>(converter.mapToSql(badges.value)!);
     }
+    if (favoriteHospital.present) {
+      final converter = $UsersTable.$converter4;
+      map['favorite_hospital'] =
+          Variable<String>(converter.mapToSql(favoriteHospital.value)!);
+    }
     return map;
   }
 
@@ -425,7 +456,8 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('latestMapUpdate: $latestMapUpdate, ')
           ..write('searchHistory: $searchHistory, ')
           ..write('points: $points, ')
-          ..write('badges: $badges')
+          ..write('badges: $badges, ')
+          ..write('favoriteHospital: $favoriteHospital')
           ..write(')'))
         .toString();
   }
@@ -517,6 +549,14 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
               defaultValue: Constant(const BadgeListDbConverter()
                   .mapToSql(BuiltList.of(<Badge>[]))!))
           .withConverter<BuiltList<Badge>>($UsersTable.$converter3);
+  final VerificationMeta _favoriteHospitalMeta =
+      const VerificationMeta('favoriteHospital');
+  @override
+  late final GeneratedColumnWithTypeConverter<List<String>, String?>
+      favoriteHospital = GeneratedColumn<String?>(
+              'favorite_hospital', aliasedName, false,
+              type: const StringType(), requiredDuringInsert: true)
+          .withConverter<List<String>>($UsersTable.$converter4);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -530,7 +570,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         latestMapUpdate,
         searchHistory,
         points,
-        badges
+        badges,
+        favoriteHospital
       ];
   @override
   String get aliasedName => _alias ?? 'users';
@@ -585,6 +626,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
           points.isAcceptableOrUnknown(data['points']!, _pointsMeta));
     }
     context.handle(_badgesMeta, const VerificationResult.success());
+    context.handle(_favoriteHospitalMeta, const VerificationResult.success());
     return context;
   }
 
@@ -608,6 +650,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       const SearchHistoryDbConverter();
   static TypeConverter<BuiltList<Badge>, String> $converter3 =
       const BadgeListDbConverter();
+  static TypeConverter<List<String>, String> $converter4 =
+      const favoriteHospitalListConverter();
 }
 
 class CalendarEvent extends DataClass implements Insertable<CalendarEvent> {

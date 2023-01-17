@@ -18,6 +18,7 @@ import 'package:loono/ui/screens/find_doctor/no_permissions_screen.dart';
 import 'package:loono/ui/screens/force_update.dart';
 import 'package:loono/ui/screens/general_practicioner_achievement.dart';
 import 'package:loono/ui/screens/gynecology_achievement.dart';
+import 'package:loono/ui/screens/hospital_list/hospital_list.dart';
 import 'package:loono/ui/screens/logout.dart';
 import 'package:loono/ui/screens/main/main_screen.dart';
 import 'package:loono/ui/screens/main/pre_auth/continue_onboarding_form.dart';
@@ -82,6 +83,11 @@ const _customFormTransition = TransitionsBuilders.slideBottom;
 )
 class $AppRouter {}
 
+const _hospitalRoute = AutoRoute<void>(
+  path: 'hospital',
+  page: HospitalListScreen,
+);
+
 const _appStartUpRouter = AutoRoute<void>(
   path: 'app-start-up',
   page: AppStartUpWrapperScreen,
@@ -143,6 +149,7 @@ const _preAuthMainScreenRouter = AutoRoute<void>(
     _preAuthPreventionRouter,
     ..._findDoctorRoutes,
     _aboutHealthRoute,
+    _hospitalRoute,
   ],
 );
 

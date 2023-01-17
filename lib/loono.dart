@@ -71,7 +71,7 @@ class Loono extends StatelessWidget {
             locale: defaultLocale != null ? Locale(defaultLocale!) : null,
             routerDelegate: AutoRouterDelegate(
               appRouter,
-              navigatorObservers: () =>
+              navigatorObservers: () => 
                   [FirebaseAnalyticsObserver(analytics: registry.get<FirebaseAnalytics>())],
             ),
             routeInformationParser: appRouter.defaultRouteParser(),

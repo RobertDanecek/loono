@@ -96,7 +96,7 @@ class UserRepository {
 
   Future<void> createUser() async {
     await _db.users.deleteAll();
-    await _db.users.insert(UsersCompanion.insert());
+    await _db.users.insert(UsersCompanion.insert(favoriteHospital: []));
   }
 
   Future<void> createUserIfNotExists() async {
@@ -208,7 +208,39 @@ class UserRepository {
     }
     return false;
   }
+  Future<void> addFavoriteHospitalItem(List<String> item) async {
+    if (item.isEmpty == null) return;
+    //final currHistory = _db.users.user?.searchHistory;
 
+  }
+  Future<void> addFavoriteHospital(String item) async {
+    var currHistory = await _db.users.user?.favoriteHospital;
+    if (currHistory== null)
+      {
+        currHistory=[item];
+      }
+    else
+      {
+        currHistory.add(item);
+      }
+    await updateCurrentUser(UsersCompanion(favoriteHospital: Value(currHistory)));
+
+  }
+
+  Future<void> removeFavoriteHospital(String hospitalID) async {
+    var currHistory = await _db.users.user?.favoriteHospital;
+    if (currHistory== null)
+    {
+      currHistory=[hospitalID];
+    }
+    else
+    {
+      currHistory.removeWhere((item) => item == hospitalID);
+      //currHistory.add(item);
+    }
+    await updateCurrentUser(UsersCompanion(favoriteHospital: Value(currHistory)));
+
+  }
   Future<void> addSearchHistoryItem(SearchResult item) async {
     if (item.data == null) return;
     final currHistory = _db.users.user?.searchHistory;
