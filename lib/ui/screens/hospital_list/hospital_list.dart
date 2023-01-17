@@ -16,7 +16,6 @@ Future<List<Hospital>> getHospitalsHTTP() async {
   dynamic responseDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
   if (response.statusCode == 200) {
-    
     for (dynamic item in responseDecoded) {
       hospitalList.add(Hospital(
           Id: item["id"].toString(),
@@ -47,8 +46,6 @@ class Hospital {
   });
 }
 
-
-
 class HospitalListScreen extends StatefulWidget {
   const HospitalListScreen({Key? key}) : super(key: key);
 
@@ -76,9 +73,8 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
 
     //for (Hospital item in hospitalList) {
 
-      for (var i = 0; i < hospitalList.length; i++){
-
-        if (favoriteList?.contains(hospitalList[i].Id) == true) {
+    for (var i = 0; i < hospitalList.length; i++) {
+      if (favoriteList?.contains(hospitalList[i].Id) == true) {
         favoriteHospitalList.add(Hospital(
             Id: hospitalList[i].Id as String,
             name: hospitalList[i].name as String,
@@ -86,14 +82,12 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
             web: hospitalList[i].web as String,
             checked: true));
 
-
-        hospitalList[i]= Hospital(
+        hospitalList[i] = Hospital(
             Id: hospitalList[i].Id as String,
             name: hospitalList[i].name as String,
             addres: hospitalList[i].addres as String,
             web: hospitalList[i].web as String,
             checked: true);
-
       }
     }
   }
@@ -108,19 +102,17 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
     await _userRepository.addFavoriteHospital(favoriteID.toString());
     setState(() {
       getFavorites();
-
     });
   }
+
   void removeHospitalFavorite(String favoriteID) async {
     await _userRepository.removeFavoriteHospital(favoriteID.toString());
     setState(() {
       getFavorites();
-
     });
   }
 
-  void changeFavorite(int index)
-  {
+  void changeFavorite(int index) {
     if (!hospitalList[index].checked) {
       addHospitalFavorite(hospitalList[index].Id);
     } else {
@@ -133,12 +125,10 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
           addres: hospitalList[index].addres,
           web: hospitalList[index].web,
           checked: !hospitalList[index].checked);
-
     });
   }
 
-  void changeFavoriteinFavorites(int index)
-  {
+  void changeFavoriteinFavorites(int index) {
     if (!favoriteHospitalList[index].checked) {
       addHospitalFavorite(favoriteHospitalList[index].Id);
     } else {
@@ -147,17 +137,16 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
 
     // TODO : optimize the following code - not efective
     for (var i = 0; i < hospitalList.length; i++) {
-      if (favoriteHospitalList[index].Id==hospitalList[i].Id)
-        {
-          hospitalList[i]= Hospital(
-              Id: hospitalList[i].Id as String,
-              name: hospitalList[i].name as String,
-              addres: hospitalList[i].addres as String,
-              web: hospitalList[i].web as String,
-              checked: false);
-        }
+      if (favoriteHospitalList[index].Id == hospitalList[i].Id) {
+        hospitalList[i] = Hospital(
+            Id: hospitalList[i].Id as String,
+            name: hospitalList[i].name as String,
+            addres: hospitalList[i].addres as String,
+            web: hospitalList[i].web as String,
+            checked: false);
+      }
     }
-      setState(() {
+    setState(() {
       favoriteHospitalList[index] = Hospital(
           Id: favoriteHospitalList[index].Id,
           name: favoriteHospitalList[index].name,
@@ -167,76 +156,65 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
     });
   }
 
-
   PageController _hospitalPageController = PageController(initialPage: 0);
 
   int page = 0;
   void pageChange(dynamic currentPage) {
-
     setState(() {
       page = currentPage as int;
     });
   }
 
-   Widget hospitalCard(Hospital item,int index, bool isFavoriteList)
-   {
-
-     return
-
-
-       Card(
-           shape: RoundedRectangleBorder(
-             borderRadius: BorderRadius.circular(10.0),
-           ),
-           child: Row(
-             children: [
-               Expanded(
-                   flex: 75,
-                   child: Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Column(
-                       children: [
-                         Container(height:5),
-                         Row(
-                             children: [
-                               //Container(width:5),
-                               Center(child: Text(item.web))]),
-                         Container(height:5),
-
-                         Text(item.name,overflow: TextOverflow.ellipsis,textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0,color: Color(0xff538e91))),
-                         Container(height:5),
-                         Text(item.addres),
-                       ],
-                     ),
-                   )),
-               Expanded(
-                   flex: 25,
-                   child: InkWell(
-                     onTap: () async {
-                       if (isFavoriteList)
-                         {
-                           changeFavoriteinFavorites(index);
-                         }
-                       else {
-                         changeFavorite(index);
-                       }
-                     },
-                     child: Column(
-                       children: [
-                         Icon(
-                             item.checked
-                                 ? Icons.star
-                                 : Icons.star_border,
-                             size: 30.0) //star_border
-                       ],
-                     ),
-                   )),
-             ],
-           ));
-
-
-
+  Widget hospitalCard(Hospital item, int index, bool isFavoriteList) {
+    return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+                flex: 75,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Container(height: 5),
+                      Row(children: [
+                        //Container(width:5),
+                        Center(child: Text(item.web))
+                      ]),
+                      Container(height: 5),
+                      Text(item.name,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 20.0, color: Color(0xff538e91))),
+                      Container(height: 5),
+                      Text(item.addres),
+                    ],
+                  ),
+                )),
+            Expanded(
+                flex: 25,
+                child: InkWell(
+                  onTap: () async {
+                    if (isFavoriteList) {
+                      changeFavoriteinFavorites(index);
+                    } else {
+                      changeFavorite(index);
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      Icon(item.checked ? Icons.star : Icons.star_border,
+                          size: 30.0) //star_border
+                    ],
+                  ),
+                )),
+          ],
+        ));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -320,71 +298,8 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
                           itemCount: hospitalList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
-                              child:
-                              hospitalCard(hospitalList[index],index,false)
-                              /*
-                              Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 75,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              children: [
-                                                Container(height:5),
-                                            Row(
-                                            children: [
-                                              //Container(width:5),
-                                              Center(child: Text(hospitalList[index].web))]),
-                                                Container(height:5),
-
-                                                Text(hospitalList[index].name,overflow: TextOverflow.ellipsis,textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0,color: Color(0xff538e91))),
-                                                Container(height:5),
-                                                Text(hospitalList[index].addres),
-                                              ],
-                                            ),
-                                          )),
-                                      Expanded(
-                                          flex: 25,
-                                          child: InkWell(
-                                            onTap: () async {
-                                              if (!hospitalList[index].checked) {
-                                                addHospitalFavorite(hospitalList[index].Id);
-                                              } else {
-                                                removeHospitalFavorite(hospitalList[index].Id);
-                                              }
-                                              setState(() {
-                                                hospitalList[index] = Hospital(
-                                                    Id: hospitalList[index].Id,
-                                                    name: hospitalList[index]
-                                                        .name,
-                                                    addres: hospitalList[index]
-                                                        .addres,
-                                                    web: hospitalList[index]
-                                                        .web,
-                                                    checked:
-                                                        !hospitalList[index]
-                                                            .checked);
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Icon(
-                                                    hospitalList[index].checked
-                                                        ? Icons.star
-                                                        : Icons.star_border,
-                                                    size: 30.0) //star_border
-                                              ],
-                                            ),
-                                          )),
-                                    ],
-                                  )),
-                              */
-                            );
+                                child: hospitalCard(
+                                    hospitalList[index], index, false));
                           }),
 
                       //Favvorite hospital screen
@@ -393,62 +308,8 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
                           itemCount: favoriteHospitalList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
-                              child:
-                              hospitalCard(favoriteHospitalList[index],index,true)
-                              /*Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 75,
-                                          child: Column(
-                                            children: [
-                                              Text(favoriteHospitalList[index].name),
-                                              Text('abcd'),
-                                              Text('abcd')
-                                            ],
-                                          )),
-                                      Expanded(
-                                          flex: 25,
-                                          child: InkWell(
-                                            onTap: () async {
-                                              if (!favoriteHospitalList[index]
-                                                  .checked) {
-                                                addHospitalFavorite(
-                                                    favoriteHospitalList[index].Id);
-                                              } else {
-                                                removeHospitalFavorite(
-                                                    favoriteHospitalList[index].Id);
-                                              }
-                                              setState(() {
-                                                favoriteHospitalList[index] = Hospital(
-                                                    Id: favoriteHospitalList[index].Id,
-                                                    name: favoriteHospitalList[index]
-                                                        .name,
-                                                    addres: favoriteHospitalList[index]
-                                                        .addres,
-                                                    web: favoriteHospitalList[index]
-                                                        .web,
-                                                    checked:
-                                                    !favoriteHospitalList[index]
-                                                        .checked);
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Icon(
-                                                    favoriteHospitalList[index].checked
-                                                        ? Icons.star
-                                                        : Icons.star_border,
-                                                    size: 30.0) //star_border
-                                              ],
-                                            ),
-                                          )),
-                                    ],
-                                  )),*/
-                            );
+                                child: hospitalCard(
+                                    favoriteHospitalList[index], index, true));
                           }),
                     ]),
               )
