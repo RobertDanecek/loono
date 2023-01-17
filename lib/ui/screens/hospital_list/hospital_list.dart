@@ -16,6 +16,7 @@ Future<List<Hospital>> getHospitalsHTTP() async {
   dynamic responseDecoded = jsonDecode(utf8.decode(response.bodyBytes));
 
   if (response.statusCode == 200) {
+    
     for (dynamic item in responseDecoded) {
       hospitalList.add(Hospital(
           Id: item["id"].toString(),
